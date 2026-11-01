@@ -1,0 +1,28 @@
+name: Extract ZIP File
+
+on:
+  workflow_dispatch:
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Unzip MilkHisab_GitHub_Actions_Source.zip
+        run: |
+          unzip MilkHisab_GitHub_Actions_Source.zip -d MilkHisab_Source/
+          rm MilkHisab_Source/MilkHisab_GitHub_Actions_Source.zip || rm MilkHisab_GitHub_Actions_Source.zip
+
+      - name: Commit and Push Extracted Files
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@://github.com"
+          git add .
+          git commit -m "Extracted MilkHisab source archive" || echo "No changes to commit"
+          git push
+          
